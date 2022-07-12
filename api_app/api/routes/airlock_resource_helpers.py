@@ -39,7 +39,7 @@ async def save_and_publish_event_airlock_request(airlock_request: AirlockRequest
         await send_status_changed_event(airlock_request)
         access_service = get_access_service()
         role_assignment_details = access_service.get_workspace_role_assignment_details(workspace)
-        await send_airlock_notification_event(airlock_request, role_assignment_details["researcher_emails"], role_assignment_details["owner_emails"])
+        await send_airlock_notification_event(airlock_request, ";".join(role_assignment_details["researcher_emails"]), ";".join(role_assignment_details["owner_emails"]))
     except Exception as e:
         airlock_request_repo.delete_item(airlock_request.id)
         logging.error(f"Failed sending status_changed message: {e}")
@@ -62,7 +62,7 @@ async def update_status_and_publish_event_airlock_request(airlock_request: Airlo
         await send_status_changed_event(updated_airlock_request)
         access_service = get_access_service()
         role_assignment_details = access_service.get_workspace_role_assignment_details(workspace)
-        await send_airlock_notification_event(updated_airlock_request, role_assignment_details["researcher_emails"], role_assignment_details["owner_emails"])
+        await send_airlock_notification_event(updated_airlock_request, ";".join(role_assignment_details["researcher_emails"]), ";".join(role_assignment_details["owner_emails"]))
         return updated_airlock_request
     except Exception as e:
         logging.error(f"Failed sending status_changed message: {e}")

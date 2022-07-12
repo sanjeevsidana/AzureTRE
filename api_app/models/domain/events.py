@@ -6,8 +6,8 @@ class AirlockNotificationData(AzureTREModel):
     request_id: str
     event_type: str
     event_value: str
-    researchers_emails: List[str]
-    owners_emails: List[str]
+    researchers_emails: str
+    owners_emails: str
     workspace_id: str
 
 
