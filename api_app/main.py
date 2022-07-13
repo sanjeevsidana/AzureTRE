@@ -2,6 +2,7 @@ import logging
 import os
 from opencensus.ext.azure.trace_exporter import AzureExporter
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
@@ -32,7 +33,7 @@ def get_application() -> FastAPI:
         version=config.VERSION,
         docs_url=None,
         redoc_url=None,
-        openapi_url=None
+        openapi_url=None,
     )
 
     application.add_event_handler("startup", create_start_app_handler(application))
@@ -46,6 +47,10 @@ def get_application() -> FastAPI:
     application.add_middleware(ServerErrorMiddleware, handler=generic_error_handler)
     application.add_exception_handler(HTTPException, http_error_handler)
     application.add_exception_handler(RequestValidationError, http422_error_handler)
+
+    # allow local CORS
+    origins = ["http://localhost:3000"]
+    application.add_middleware(CORSMiddleware, allow_origins=origins, allow_headers=["*"], allow_methods=["*"])
 
     application.include_router(api_router)
     return application
