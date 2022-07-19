@@ -1,9 +1,9 @@
 output "app_insights_instrumentation_key" {
-  value = jsondecode(azurerm_resource_group_template_deployment.app_insights_core.output_content).instrumentationKey.value
+  value = azurerm_application_insights.core.instrumentation_key
 }
 
 output "app_insights_connection_string" {
-  value = jsondecode(azurerm_resource_group_template_deployment.app_insights_core.output_content).connectionString.value
+  value = azurerm_application_insights.core.connection_string
 }
 
 output "log_analytics_workspace_id" {
